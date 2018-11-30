@@ -3,6 +3,8 @@ package controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,19 +23,18 @@ public class ProdutoServlet extends HttpServlet {
     ProdutoService produtoService = new ProdutoService();
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         ArrayList<Produto> produtos = produtoService.getAll();
         
         PrintWriter out = response.getWriter();
         String titulo = getServletConfig().getInitParameter("titulo");
-        out.write("<html><head></head><body><h1>" + titulo + "</h1><hr/>");
                 
-        for(Produto p : produtos)
-        {
-            out.write(String.format("<div>%d - %s</div>", p.getCodigo(), p.getNome()));
-        }
+        // incluir atributos na requisição para serem listados no JSP
+        request.setAttribute("titulo", titulo);
+        request.setAttribute("produtos", produtos);
         
-        out.write("</body></html>");
+        RequestDispatcher rd = request.getRequestDispatcher("Produtos/ListarProdutos.jsp");
+        rd.forward(request, response);
     }
 }
