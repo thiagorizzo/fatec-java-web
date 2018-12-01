@@ -3,48 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package services;
+package repository;
 
-import controllers.interfaces.IProdutoService;
 import domain.Produto;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import repository.ProdutoRepository;
 import services.interfaces.IProdutoRepository;
 
 /**
  *
  * @author Rizzo
  */
-public class ProdutoService implements IProdutoService {
-    
-    // TODO: injetar dependência
-    IProdutoRepository produtoRepository = new ProdutoRepository();
-    
-    public static List<Produto> produtos = new ArrayList<Produto>() {{
+public class ProdutoRepository implements IProdutoRepository {
+
+    public static ArrayList<Produto> produtos = new ArrayList<Produto>() {{
         add(new Produto() {{ setCodigo(1); setNome("Caneta"); }});
         add(new Produto() {{ setCodigo(2); setNome("Lápis"); }});
         add(new Produto() {{ setCodigo(3); setNome("Régua"); }});
-    }};
-
+    }};    
+    
     @Override    
-    public List<Produto> getAll() {
-        return produtoRepository.getAll();
+    public ArrayList<Produto> getAll() {
+        return produtos;
     }
     
     @Override
     public Produto addProduto(Produto produto) {
-        return produtoRepository.addProduto(produto);
+        produtos.add(produto);
+        return produto;
     }
 
     @Override
     public void removeProduto(Produto produto) {
-        produtoRepository.removeProduto(produto);
+        produtos.remove(produtos.stream().filter(p -> p.getCodigo() == produto.getCodigo()));
     }
 
     @Override
     public Optional<Produto> getProdutoByCodigo(int codigo) {
-        return produtoRepository.getProdutoByCodigo(codigo);
+        return produtos.stream().filter(p -> p.getCodigo() == codigo).findFirst();
     }
 }

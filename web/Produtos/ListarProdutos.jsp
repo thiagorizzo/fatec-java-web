@@ -4,8 +4,8 @@
     Author     : Rizzo
 --%>
 
-<%@page import="models.Produto"%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="domain.Produto"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,7 @@
         <hr/>
         <table>
         <%
-            ArrayList<Produto> produtos = (ArrayList<Produto>) request.getAttribute("produtos");
+            List<Produto> produtos = (List<Produto>) request.getAttribute("produtos");
             for(Produto p : produtos) 
             {%>
                 <tr>

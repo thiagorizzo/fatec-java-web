@@ -1,8 +1,8 @@
 package controllers;
 
+import controllers.interfaces.IProdutoService;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
@@ -10,7 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Produto;
+import domain.Produto;
+import java.util.List;
 import services.ProdutoService;
 
 @WebServlet(
@@ -20,12 +21,14 @@ import services.ProdutoService;
         initParams = @WebInitParam(name = "titulo", value = "Produtos")
 )
 public class ProdutoServlet extends HttpServlet {
-    ProdutoService produtoService = new ProdutoService();
+    
+    // TODO: injetar dependência
+    IProdutoService produtoService = new ProdutoService();
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        ArrayList<Produto> produtos = produtoService.getAll();
+        List<Produto> produtos = produtoService.getAll();
         
         PrintWriter out = response.getWriter();
         String titulo = getServletConfig().getInitParameter("titulo");
